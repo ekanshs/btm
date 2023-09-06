@@ -265,6 +265,7 @@ class MultidomainLanguageModelingTask(LegacyFairseqTask):
     @classmethod
     def _get_domains(cls, args, epoch=1):
         paths = utils.split_paths(args.data)
+        print(f"ES: get_domains {args.data}")
         assert len(paths) > 0
         data_path = paths[(epoch - 1) % len(paths)]
 
@@ -341,11 +342,13 @@ class MultidomainLanguageModelingTask(LegacyFairseqTask):
 
         domain_datasets = []
         for domain_id, domain in domains:
-            split_path = os.path.join(data_path, domain, split)
+            split_path = os.path.join(data_path, domain, split,)
+            print(f"ES:{split_path}")
+            print(f"ES dataset, {self.dictionary}, {self.args.dataset_impl}, {combine}")
             dataset = data_utils.load_indexed_dataset(
                 split_path, self.dictionary, self.args.dataset_impl, combine=combine
             )
-
+            
             if dataset is None:
                 continue
 
@@ -430,6 +433,7 @@ class MultidomainLanguageModelingTask(LegacyFairseqTask):
         else:
 
             ds = []
+            print(f"ES:{domain_datasets}")
             size_ratio = np.array([1.0] * len(domain_datasets))
             for i, d in enumerate(domain_datasets):
                 d = ResamplingDataset(

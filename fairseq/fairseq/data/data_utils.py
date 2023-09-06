@@ -99,10 +99,11 @@ def load_indexed_dataset(
                 logger.warning(f"path_k: {e} not found")
             else:
                 raise e
-
+        print(f"ES: here: path_k{path_k}")
         dataset_impl_k = dataset_impl
         if dataset_impl_k is None:
             dataset_impl_k = indexed_dataset.infer_dataset_impl(path_k)
+        print(f"ES: here: dataset {dataset_impl_k}")
         dataset = indexed_dataset.make_dataset(
             path_k,
             impl=dataset_impl_k or default,

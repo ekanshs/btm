@@ -1,20 +1,21 @@
 # Path to preprocessed data
 DATA_PATH=$1
 # Folder of model for evaluation
-MODEL_FOLDER=$2
-# model file name
-CHECKPOINT_FILE_NAME=$3
-# split you'd like to evaluate on ("valid" or "test")
-DATA_SPLIT=$4
-# target domain to evaluate on
-DATA_DOMAIN_NAME=$5
+MODEL_PATH=$2
 
-model_file=${MODEL_FOLDER}/${CHECKPOINT_FILE_NAME};
-results_folder=${MODEL_FOLDER}/evals/${DATA_DOMAIN_NAME}
+# split you'd like to evaluate on ("valid" or "test")
+DATA_SPLIT=$3
+# target domain to evaluate on
+DATA_DOMAIN_NAME=$4
+
+RESULTS_FOLDER=$5
+
+model_file=${MODEL_PATH};
+results_folder=${RESULTS_FOLDER}/${DATA_DOMAIN_NAME}
 results_path=${results_folder}/test_results.txt
 mkdir -p results_folder;
 
-python -u fairseq/fairseq_cli/eval_lm.py \
+python -u fairseq_cli/eval_lm.py \
 ${DATA_PATH} \
 --path ${model_file} \
 --gen-subset ${DATA_SPLIT}_${DATA_DOMAIN_NAME} \
@@ -23,5 +24,4 @@ ${DATA_PATH} \
 --tokens-per-sample 1024     \
 --batch-size 2  \
 --eval-domains ${DATA_DOMAIN_NAME} \
---results-path ${results_path} \
---partial-load;
+--results-path ${results_path};

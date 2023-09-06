@@ -43,6 +43,7 @@ def infer_dataset_impl(path):
     if IndexedRawTextDataset.exists(path):
         return "raw"
     elif IndexedDataset.exists(path):
+        print("EKANSH")
         with open(index_file_path(path), "rb") as f:
             magic = f.read(8)
             if magic == IndexedDataset._HDR_MAGIC:

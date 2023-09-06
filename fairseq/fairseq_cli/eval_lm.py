@@ -107,10 +107,10 @@ def eval_lm(
     for sample in batch_iterator:
         if "net_input" not in sample:
             continue
-
         sample = utils.move_to_cuda(sample, device=device)
 
         gen_timer.start()
+        
         hypos = scorer.generate(models, sample)
         gen_timer.stop(sample["ntokens"])
 
@@ -250,8 +250,10 @@ def main(cfg: DictConfig, **unused_kwargs):
 
     # Load ensemble
     logger.info("loading model(s) from {}".format(cfg.common_eval.path))
+    model_paths = cfg.common_eval.path.split(':')
+    print(f"ES: {model_paths}")
     models, model_args, task = checkpoint_utils.load_model_ensemble_and_task(
-        [cfg.common_eval.path],
+        model_paths,
         arg_overrides=eval(cfg.common_eval.model_overrides),
         suffix=cfg.checkpoint.checkpoint_suffix,
         strict=(cfg.checkpoint.checkpoint_shard_count == 1),

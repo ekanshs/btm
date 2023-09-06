@@ -35,7 +35,8 @@ class SequenceScorer(object):
     def generate(self, models, sample, **kwargs):
         """Score a batch of translations."""
         net_input = sample["net_input"]
-
+        print(f"ES: net_input = {net_input}")
+        net_input.pop('src_domain_idx')
         def batch_for_softmax(dec_out, target):
             # assumes decoder_out[0] is the only thing needed (may not be correct for future models!)
             first, rest = dec_out[0], dec_out[1:]
